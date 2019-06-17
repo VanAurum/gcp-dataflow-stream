@@ -19,7 +19,7 @@ def run(argv=None):
         default='stream',
         help='Streaming input or file based batch input')
 
-    parser.add_argument('--input_topc',
+    parser.add_argument('--input_topic',
                         default='stock-stream',
                         required=True,
                         help='Topic to pull data from.')
