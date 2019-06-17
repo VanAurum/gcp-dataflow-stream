@@ -20,7 +20,7 @@ def run(argv=None):
         help='Streaming input or file based batch input')
 
     parser.add_argument('--input_topic',
-                        default='stock-stream',
+                        default='projects/vanaurum/topics/stock-stream',
                         required=True,
                         help='Topic to pull data from.')
 
