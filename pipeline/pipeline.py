@@ -58,7 +58,7 @@ def run(argv=None):
                     )
                 )
 
-        price | beam.io.WriteToPubSub(known_args.output)
+        price | WriteToText(known_args.output)
 
 
 if __name__ == '__main__':
