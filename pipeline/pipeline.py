@@ -58,7 +58,7 @@ def run(argv=None):
                     )
                 )
 
-        (price | WriteToText(known_args.output))
+        (price | 'WriteOutput' >> WriteToText(known_args.output))
 
 
 if __name__ == '__main__':
