@@ -19,6 +19,11 @@ def run(argv=None):
         default='stream',
         help='Streaming input or file based batch input')
 
+    parser.add_argument('--input_topc',
+                        default='stock-stream',
+                        required=True,
+                        help='Topic to pull data from.')
+
     parser.add_argument('--output',
                         dest='gs://vanaurum-stock-stream/',
                         required=True,
