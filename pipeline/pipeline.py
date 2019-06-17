@@ -10,7 +10,7 @@ from apache_beam.options.pipeline_options import PipelineOptions, SetupOptions, 
 from apache_beam.transforms import window
 import six
 
-from transformers.transformers import AddTimestampDoFn
+from .transformers import AddTimestampDoFn
 
 
 def run(argv=None):
