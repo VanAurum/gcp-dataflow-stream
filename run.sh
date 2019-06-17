@@ -5,4 +5,4 @@ python -m pipeline.pipeline \
   --temp_location gs://vanaurum-stock-stream/temp \
 --input_mode stream \
 --input_topic stock-stream \
-  --output gs://vanaurum-stock-stream/
+--output gs://vanaurum-stock-stream/
