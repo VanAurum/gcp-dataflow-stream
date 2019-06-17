@@ -58,7 +58,8 @@ def run(argv=None):
                     )
                 )
 
-        (price | 'WriteOutput' >> WriteToText(known_args.output))
+        (price | 'WriteOutput' >> WriteToText(known_args.output, file_name_suffix='.csv', header='price, time'))
+
 
 
 if __name__ == '__main__':
