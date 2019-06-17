@@ -15,6 +15,7 @@ from transformers.transformers import AddTimestampDoFn
 
 def run(argv=None):
     parser = argparse.ArgumentParser()
+
     parser.add_argument(
         '--input_mode',
         default='stream',
@@ -26,7 +27,7 @@ def run(argv=None):
                         help='Topic to pull data from.')
 
     parser.add_argument('--output',
-                        dest='gs://vanaurum-stock-stream/',
+                        default='gs://vanaurum-stock-stream/',
                         required=True,
                         help='Output file to write results to.')
 
