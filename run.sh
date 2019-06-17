@@ -1,4 +1,4 @@
-python -m correlated_trading.trading_pipe \
+python -m pipeline.pipeline \
   --project vanaurum \
   --runner DataflowRunner \
   --staging_location gs:// \
