@@ -26,7 +26,7 @@ class AddTimestampDoFn(beam.DoFn):
 
 def parse_json(line):
     record = json.loads(line)
-    return record['timestamp'], record['stock_price']
+    return record
 
 
 def decode_message(line):
@@ -46,10 +46,11 @@ def run(argv=None):
                         required=True,
                         help='Topic to pull data from.')
 
-    parser.add_argument('--output',
-                        default='gs://vanaurum-stock-stream/',
+    parser.add_argument('--output_table', 
                         required=True,
-                        help='Output file to write results to.')
+                        help=
+                        ('Output BigQuery table for results specified as: PROJECT:DATASET.TABLE '
+                        'or DATASET.TABLE.'))
 
     known_args, pipeline_args = parser.parse_known_args(argv)
     print(known_args)
@@ -70,11 +71,11 @@ def run(argv=None):
         price_ma = (input_price
                 | 'Decode'  >> beam.Map(decode_message)
                 | 'Parse' >> beam.Map(parse_json) 
-                | 'Add Timestamp' >> beam.ParDo(AddTimestampDoFn())
-                | 'Window' >> beam.WindowInto(window.FixedWindows(30))
-                )
-
-        (price_ma | 'WriteOutput' >> WriteToText(known_args.output, file_name_suffix='.csv', header='price, time'))
+                | 'Write to Table' >> beam.io.WriteToBigQuery(
+                    known_args.output_table,
+                    schema=' timestamp:TIMESTAMP, stock_price:FLOAT',
+                    create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
+                    write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND)
 
 
 

@@ -6,4 +6,4 @@ python -m pipeline.pipeline \
   --experiments=allow_non_updatable_job parameter\
 --input_mode stream \
 --input_topic projects/vanaurum/topics/stock-stream \
---output gs://vanaurum-stock-stream/output
+--output_table vanaurum:vanaurum.stock_stream
