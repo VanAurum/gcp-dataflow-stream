@@ -24,8 +24,8 @@ class AddTimestampDoFn(beam.DoFn):
         yield beam.window.TimestampedValue(element['stock_price'], unix_timestamp)
 
 
-def parse_json(json):
-    record = json.loads(json)
+def parse_json(line):
+    record = json.loads(line)
     return record['timestamp'], record['stock_price']
 
 
