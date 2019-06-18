@@ -54,7 +54,6 @@ def run(argv=None):
         input_price = (p | beam.io.ReadFromPubSub(topic=known_args.input_topic)
                         .with_output_types(six.binary_type))
 
-        print(input_price.attributes)
         price = (input_price
                 | 'decode'  >> beam.Map(lambda x: x.decode('utf-8'))
                 | 'Add Timestamp' >> beam.ParDo(AddTimestampDoFn())
