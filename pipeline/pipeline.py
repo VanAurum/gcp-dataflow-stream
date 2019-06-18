@@ -75,7 +75,7 @@ def run(argv=None):
                     known_args.output_table,
                     schema=' timestamp:TIMESTAMP, stock_price:FLOAT',
                     create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-                    write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND)
+                    write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND))
 
 
 
