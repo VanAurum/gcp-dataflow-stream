@@ -3,6 +3,7 @@
 import argparse
 import itertools
 import logging
+import datetime
 
 import apache_beam as beam
 from apache_beam.io import ReadFromText, WriteToText
@@ -10,7 +11,13 @@ from apache_beam.options.pipeline_options import PipelineOptions, SetupOptions, 
 from apache_beam.transforms import window
 import six
 
-from .transformers import AddTimestampDoFn
+
+class AddTimestampDoFn(beam.DoFn):
+
+    def process(self, element, *args, **kwargs):
+        trade_date = element.split(',')[0]
+        unix_timestamp = int(datetime.datetime.strptime(trade_date, '%Y/%m/%d').strftime("%s"))
+        yield beam.window.TimestampedValue(element, unix_timestamp)
 
 
 def run(argv=None):
