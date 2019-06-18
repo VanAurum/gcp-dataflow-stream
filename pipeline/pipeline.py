@@ -16,7 +16,9 @@ import six
 class AddTimestampDoFn(beam.DoFn):
 
     def process(self, element, *args, **kwargs):
-        trade_date = element['timestamp']
+        print(element)
+        trade_date = element.properties.get('timestamp')
+        print(trade_date)
         unix_timestamp = time.mktime(datetime.datetime.strptime(trade_date, 'YYYY-MM-DDTHH:MM:SS.mmmmmm').timetuple())
         yield beam.window.TimestampedValue(element, unix_timestamp)
 
