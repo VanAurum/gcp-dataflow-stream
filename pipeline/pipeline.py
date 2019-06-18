@@ -5,6 +5,8 @@ import itertools
 import logging
 import datetime
 import time
+import base64
+import json
 
 import apache_beam as beam
 from apache_beam.io import ReadFromText, WriteToText
@@ -17,10 +19,18 @@ class AddTimestampDoFn(beam.DoFn):
 
     def process(self, element, *args, **kwargs):
         print(element)
-        trade_date = element['timestamp'].decode()
-        print(trade_date)
+        trade_date = element['timestamp']
         unix_timestamp = time.mktime(datetime.datetime.strptime(trade_date, 'YYYY-MM-DDTHH:MM:SS.mmmmmm').timetuple())
-        yield beam.window.TimestampedValue(element, unix_timestamp)
+        yield beam.window.TimestampedValue(element['stock_price'], unix_timestamp)
+
+
+def parse_json(json):
+    record = json.loads(json)
+    return record['timestamp'], record['stock_price']
+
+
+def decode_message(line):
+    return base64.urlsafe_b64decode(line)
 
 
 def run(argv=None):
@@ -58,7 +68,8 @@ def run(argv=None):
                         .with_output_types(six.binary_type))
 
         price = (input_price
-                | 'decode'  >> beam.Map(lambda x: x.decode('utf-8'))
+                | 'Decode'  >> beam.Map(decode_message)
+                | 'Parse' >> beam.Map(parse_json) 
                 | 'Add Timestamp' >> beam.ParDo(AddTimestampDoFn())
                 | 'Window' >> beam.WindowInto(
                     window.SlidingWindows(
