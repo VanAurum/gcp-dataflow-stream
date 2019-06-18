@@ -15,8 +15,8 @@ import six
 class AddTimestampDoFn(beam.DoFn):
 
     def process(self, element, *args, **kwargs):
-        trade_date = element.split(',')[0]
-        unix_timestamp = int(datetime.datetime.strptime(trade_date, '%Y/%m/%d').strftime("%s"))
+        trade_date = element['timestamp']
+        unix_timestamp = int(datetime.datetime.strptime(trade_date, 'YYYY-MM-DDTHH:MM:SS.mmmmmm').strftime("%s"))
         yield beam.window.TimestampedValue(element, unix_timestamp)
 
 
@@ -54,6 +54,7 @@ def run(argv=None):
         input_price = (p | beam.io.ReadFromPubSub(topic=known_args.input_topic)
                         .with_output_types(six.binary_type))
 
+        print(input_price.attributes)
         price = (input_price
                 | 'decode'  >> beam.Map(lambda x: x.decode('utf-8'))
                 | 'Add Timestamp' >> beam.ParDo(AddTimestampDoFn())

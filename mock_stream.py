@@ -2,6 +2,7 @@
 
 # Standar Python Library Imports
 import time
+import datetime
 
 # Local imports
 from stock_generator.stock_generator import StockGenerator
@@ -33,7 +34,11 @@ def main():
         time.sleep(1)
         price = next(stock_price)
         price = str(price).encode('utf-8')
-        message_future = publisher.publish(topic, data=price)
+        message_future = publisher.publish(
+            topic, 
+            data=price,
+            timestamp = str(datetime.datetime.utcnow()),
+            )
         message_future.add_done_callback(pub_callback)
 
 if __name__ == '__main__':
