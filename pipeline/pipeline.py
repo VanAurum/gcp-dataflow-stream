@@ -20,7 +20,7 @@ class AddTimestampDoFn(beam.DoFn):
     def process(self, element, *args, **kwargs):
         print(element)
         trade_date = element[0]
-        unix_timestamp = time.mktime(datetime.datetime.strptime(trade_date, 'YYYY-MM-DDTHH:MM:SS.mmmmmm').timetuple())
+        unix_timestamp = time.mktime(datetime.datetime.strptime(trade_date, 'YYYY-MM-DD HH:MM:SS.mmmmmm').timetuple())
         yield beam.window.TimestampedValue(element[1], unix_timestamp)
 
 
