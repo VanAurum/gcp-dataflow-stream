@@ -71,7 +71,7 @@ def run(argv=None):
                 | 'Decode'  >> beam.Map(decode_message)
                 | 'Parse' >> beam.Map(parse_json) 
                 | 'Add Timestamp' >> beam.ParDo(AddTimestampDoFn())
-                | 'Window' >> beam.WindowInto(window.SlidingWindows(30, 1))
+                | 'Window' >> beam.WindowInto(window.FixedWindows(30))
                 )
 
         (price_ma | 'WriteOutput' >> WriteToText(known_args.output, file_name_suffix='.csv', header='price, time'))
